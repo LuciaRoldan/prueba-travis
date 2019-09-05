@@ -4,3 +4,15 @@ script: mvn clean verify
 branches: 
  only: 
   - master
+dist: trusty
+ 
+env:
+  global:
+    - CC_TEST_REPORTER_ID=[YOUR CODE COVERAGE]
+before_script:
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - ./cc-test-reporter before-build
+after_script:
+    - ./cc-test-reporter format-coverage -d -t jacoco ./target/jacoco-ut/jacoco.xml
+    - ./cc-test-reporter upload-coverage -d
